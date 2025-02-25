@@ -21,3 +21,9 @@ A responsive React-based web application showcasing the beauty and tourism poten
    ```bash
    git clone https://github.com/yourusername/wanderkashmir.git
    cd wanderkashmir
+   2.##Install Dependencies:
+   bash
+   npm install
+   3. ##Run the Development Server:
+   bash
+   npm run dev
