@@ -52,7 +52,7 @@ export default function Destinations() {
                       <h3 className="text-xl font-extrabold text-teal-700 mb-1 group-hover:text-blue-700 transition text-center tracking-tight">{dest.name || key.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</h3>
                       <p className="text-gray-600 text-center text-sm mb-4 line-clamp-2">{dest.desc}</p>
                       <Link to={`/destinations/${key}`} className="inline-block mt-auto px-5 py-2 bg-gradient-to-r from-cyan-400 to-blue-400 text-white rounded-full text-xs font-bold shadow hover:from-cyan-500 hover:to-blue-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-300">View Details</Link>
-                    </div>
+      </div>
                   );
                 })}
               </div>

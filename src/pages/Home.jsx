@@ -28,7 +28,7 @@ export default function Home() {
             <h2 className="text-2xl font-extrabold text-teal-700 mb-2 tracking-wide">{dest.name}</h2>
             <p className="text-gray-600 mb-3 text-center">{dest.desc}</p>
             <Link to="/destinations" className="text-teal-600 font-semibold hover:underline">See more</Link>
-          </div>
+            </div>
         ))}
       </section>
     </div>
