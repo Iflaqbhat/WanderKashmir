@@ -1,130 +1,65 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDestinations } from "../context/DestinationsContext";
+import { useDestinations } from '../context/DestinationsContext';
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
-function Destinations() {
-  const [activeTab, setActiveTab] = useState("popular");
-  const [bookingPlace, setBookingPlace] = useState(null);
+const CATEGORIES = [
+  {
+    title: 'Popular Destinations',
+    keys: ['srinagar', 'gulmarg', 'pahalgam', 'sonmarg'],
+  },
+  {
+    title: 'Valleys & Meadows',
+    keys: [
+      'doodhpathri', 'yusmarg', 'aru-valley', 'betaab-valley', 'tosamaidan', 'gurez-valley', 'bangus-valley', 'lolab-valley', 'daksum', 'bungus-valley',
+    ],
+  },
+  {
+    title: 'Spiritual & Heritage Sites',
+    keys: [
+      'charar-e-sharief', 'hazratbal-shrine', 'shankaracharya-temple', 'hari-parbat-fort', 'jamia-masjid-srinagar', 'makhdoom-sahib-shrine', 'chatti-padshahi-gurudwara',
+    ],
+  },
+  {
+    title: 'Other Attractions',
+    keys: [
+      'kokernag', 'verinag', 'aharbal-waterfall', 'mughal-road-&-peer-ki-gali', 'mansar-lake', 'sinthan-top',
+    ],
+  },
+];
+
+export default function Destinations() {
   const { destinations } = useDestinations();
-
-  const popular = [
-    "srinagar",
-    "gulmarg",
-    "pahalgam",
-    "sonmarg",
-    "doodhpathri",
-    "yusmarg",
-    "aru-valley",
-    "betaab-valley",
-    "tosamaidan",
-    "kokernag",
-  ].map((key) => ({
-    name: key.charAt(0).toUpperCase() + key.slice(1),
-    ...destinations[key],
-  }));
-
-  const lesserKnown = [
-    "verinag",
-    "gurez-valley",
-    "bangus-valley",
-    "lolab-valley",
-    "daksum",
-    "aharbal-waterfall",
-    "mughal-road-&-peer-ki-gali",
-    "mansar-lake",
-    "sinthan-top",
-    "bungus-valley",
-  ].map((key) => ({
-    name: key.charAt(0).toUpperCase() + key.slice(1),
-    ...destinations[key],
-  }));
-
-  const spiritual = [
-    "charar-e-sharief",
-    "hazratbal-shrine",
-    "shankaracharya-temple",
-    "hari-parbat-fort",
-    "jamia-masjid-srinagar", // Added
-    "makhdoom-sahib-shrine", // Added
-    "chatti-padshahi-gurudwara", // Added
-  ].map((key) => ({
-    name: key.charAt(0).toUpperCase() + key.slice(1),
-    ...destinations[key],
-  }));
-
-  const tabs = {
-    popular,
-    "lesser-known": lesserKnown,
-    spiritual,
-  };
-
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
   return (
-    <div className="container mx-auto py-16 px-6">
-      <h1 className="text-5xl font-extrabold text-center mb-12 tracking-tight">
-        Explore Kashmir
-      </h1>
-      <div className="flex justify-center space-x-6 mb-10">
-        {["popular", "lesser-known", "spiritual"].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-8 py-3 rounded-full font-semibold text-lg transition-colors duration-200 ${
-              activeTab === tab
-                ? "bg-teal-600 text-white"
-                : "bg-gray-200 hover:bg-teal-500 hover:text-white"
-            }`}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1).replace("-", " ")}
-          </button>
-        ))}
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {tabs[activeTab].map((place) => (
-          <Link
-            key={place.name}
-            to={`/destinations/${place.name
-              .toLowerCase()
-              .replace(/ & /g, "-")
-              .replace(/ /g, "-")}`}
-            className="block bg-white dark:bg-dark-card rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer"
-          >
-            <div className="relative">
-              <img
-                src={place.img}
-                alt={place.name}
-                className="w-full h-80 object-cover"
-              />{" "}
-              {/* Increased from h-48 to h-80 */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              <h2 className="absolute bottom-4 left-4 text-xl font-bold text-white">
-                {place.name}
-              </h2>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                {place.desc}
-              </p>
-              <div className="flex justify-between items-center">
-                <span className="text-teal-600 dark:text-teal-400 hover:underline font-semibold">
-                  Details
-                </span>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setBookingPlace(place);
-                  }}
-                  className="bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 transition-colors duration-200"
-                >
-                  Book Now
-                </button>
+    <div className="min-h-screen bg-transparent py-12 px-4">
+      <h1 className="text-4xl md:text-5xl font-black text-center text-teal-800 mb-12 drop-shadow-lg tracking-tight">All Destinations</h1>
+      <div className="max-w-7xl mx-auto flex flex-col gap-16">
+        {CATEGORIES.map((cat) => {
+          const items = cat.keys.map((key) => destinations[key]).filter(Boolean);
+          if (!items.length) return null;
+          return (
+            <section key={cat.title}>
+              <h2 className="text-2xl md:text-3xl font-bold text-teal-700 mb-6 pl-2 tracking-tight">{cat.title}</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+                {cat.keys.map((key) => {
+                  const dest = destinations[key];
+                  if (!dest) return null;
+                  return (
+                    <div key={key} className="group bg-white rounded-3xl border border-transparent hover:border-cyan-200 shadow-xl p-6 flex flex-col items-center transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gradient-to-br hover:from-cyan-50 hover:to-blue-50">
+                      <img src={dest.img} alt={dest.name || key} className="rounded-2xl w-full h-40 object-cover mb-4 border-4 border-teal-50 group-hover:border-cyan-200 transition-all duration-300" />
+                      <h3 className="text-xl font-extrabold text-teal-700 mb-1 group-hover:text-blue-700 transition text-center tracking-tight">{dest.name || key.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</h3>
+                      <p className="text-gray-600 text-center text-sm mb-4 line-clamp-2">{dest.desc}</p>
+                      <Link to={`/destinations/${key}`} className="inline-block mt-auto px-5 py-2 bg-gradient-to-r from-cyan-400 to-blue-400 text-white rounded-full text-xs font-bold shadow hover:from-cyan-500 hover:to-blue-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-300">View Details</Link>
+                    </div>
+                  );
+                })}
               </div>
-            </div>
-          </Link>
-        ))}
+            </section>
+          );
+        })}
       </div>
-      {/* Booking modal unchanged */}
     </div>
   );
 }
-
-export default Destinations;
